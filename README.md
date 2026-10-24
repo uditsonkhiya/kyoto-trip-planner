@@ -2,7 +2,7 @@
 
 A chat page that answers questions about a Kyoto weekend with stay, experience and food cards.
 
-![The three cards: stay, experience and food](docs/three-cards.png)
+![The three cards: a stay booking card, an experience ticket and a food menu card](docs/three-cards.png)
 
 Run it locally with `npm install && npm run dev`, then open http://localhost:3000.
 
