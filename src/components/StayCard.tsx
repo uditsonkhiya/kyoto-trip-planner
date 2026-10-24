@@ -1,3 +1,5 @@
+import { amount, FILLER, formatDate, isoDate, text } from "@/lib/fallbacks";
+
 export type Stay = {
   listingTitle: string;
   neighbourhood: string;
@@ -11,16 +13,21 @@ export type Stay = {
 
 // Booking-style card: tall photo banner on top, details stacked below.
 export default function StayCard({ stay }: { stay: Stay }) {
-  const nights = Math.round(
-    (Date.parse(stay.checkOut) - Date.parse(stay.checkIn)) / 86_400_000,
-  );
+  const title = text(stay.listingTitle) ?? FILLER.name;
+  const checkIn = isoDate(stay.checkIn);
+  const checkOut = isoDate(stay.checkOut);
+  const nights =
+    checkIn && checkOut
+      ? Math.round((checkOut.getTime() - checkIn.getTime()) / 86_400_000)
+      : 0;
+  const price = amount(stay.pricePerNight);
 
   return (
     <article className="overflow-hidden rounded-3xl bg-white shadow-md ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
       <div className="relative">
         <div
           role="img"
-          aria-label={`Photo of ${stay.listingTitle} coming soon`}
+          aria-label={`Photo of ${title} coming soon`}
           className="flex h-40 items-center justify-center bg-linear-to-br from-coral-100 to-coral-300 text-coral-600 dark:from-coral-500/25 dark:to-coral-500/5 dark:text-coral-300"
         >
           <svg
@@ -46,7 +53,7 @@ export default function StayCard({ stay }: { stay: Stay }) {
       <div className="flex flex-col gap-4 p-5">
         <div>
           <h3 className="text-xl font-semibold leading-tight tracking-tight text-zinc-900 dark:text-zinc-50">
-            {stay.listingTitle}
+            {title}
           </h3>
           <p className="mt-1 flex items-center gap-1 text-sm text-zinc-500 dark:text-zinc-400">
             <svg
@@ -60,7 +67,7 @@ export default function StayCard({ stay }: { stay: Stay }) {
               <path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12Z" />
               <circle cx="12" cy="9" r="2.5" />
             </svg>
-            {stay.neighbourhood}
+            {text(stay.neighbourhood) ?? FILLER.neighbourhood}
           </p>
         </div>
 
@@ -68,7 +75,7 @@ export default function StayCard({ stay }: { stay: Stay }) {
           <span className="text-coral-500" aria-hidden="true">
             ✦{" "}
           </span>
-          {stay.highlight}
+          {text(stay.highlight) ?? FILLER.highlight}
         </p>
 
         <dl className="grid grid-cols-2 divide-x divide-zinc-200 rounded-2xl border border-zinc-200 text-sm dark:divide-zinc-800 dark:border-zinc-800">
@@ -87,28 +94,21 @@ export default function StayCard({ stay }: { stay: Stay }) {
         </dl>
 
         <div className="flex items-baseline justify-between border-t border-zinc-200 pt-4 dark:border-zinc-800">
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            <span className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-              ${stay.pricePerNight}
-            </span>{" "}
-            / night
-          </p>
-          {nights > 0 && (
+          {price === undefined ? (
+            <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400">{FILLER.price}</p>
+          ) : (
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">
+              <span className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">${price}</span>{" "}
+              / night
+            </p>
+          )}
+          {price !== undefined && nights > 0 && (
             <p className="text-sm font-semibold text-coral-600 dark:text-coral-300">
-              ${stay.pricePerNight * nights} total
+              ${price * nights} total
             </p>
           )}
         </div>
       </div>
     </article>
   );
-}
-
-function formatDate(iso: string): string {
-  return new Date(iso + "T00:00:00Z").toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    timeZone: "UTC",
-  });
 }

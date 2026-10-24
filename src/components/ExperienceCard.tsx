@@ -1,3 +1,5 @@
+import { amount, FILLER, formatDuration, isoDate, text } from "@/lib/fallbacks";
+
 export type Experience = {
   activityName: string;
   neighbourhood: string;
@@ -10,24 +12,35 @@ export type Experience = {
 
 // Ticket-style card: filled purple pass with a tear-off date stub on the left.
 export default function ExperienceCard({ experience }: { experience: Experience }) {
-  const date = new Date(experience.date + "T00:00:00Z");
+  const name = text(experience.activityName) ?? FILLER.name;
+  const date = isoDate(experience.date);
   const part = (opts: Intl.DateTimeFormatOptions) =>
-    date.toLocaleDateString("en-US", { ...opts, timeZone: "UTC" });
+    date?.toLocaleDateString("en-US", { ...opts, timeZone: "UTC" });
+  const price = amount(experience.pricePerPerson);
 
   return (
     <article className="flex rounded-2xl bg-purple-600 text-white shadow-md dark:bg-purple-800">
-      <time
-        dateTime={experience.date}
-        className="flex w-24 shrink-0 flex-col items-center justify-center py-5 sm:w-28"
-      >
-        <span className="text-xs font-semibold uppercase tracking-widest text-purple-200">
-          {part({ weekday: "short" })}
-        </span>
-        <span className="text-4xl font-bold leading-none">{part({ day: "numeric" })}</span>
-        <span className="mt-1 text-xs font-semibold uppercase tracking-widest text-purple-200">
-          {part({ month: "short" })}
-        </span>
-      </time>
+      {date ? (
+        <time
+          dateTime={experience.date.trim()}
+          className="flex w-24 shrink-0 flex-col items-center justify-center py-5 sm:w-28"
+        >
+          <span className="text-xs font-semibold uppercase tracking-widest text-purple-200">
+            {part({ weekday: "short" })}
+          </span>
+          <span className="text-4xl font-bold leading-none">{part({ day: "numeric" })}</span>
+          <span className="mt-1 text-xs font-semibold uppercase tracking-widest text-purple-200">
+            {part({ month: "short" })}
+          </span>
+        </time>
+      ) : (
+        <p className="flex w-24 shrink-0 flex-col items-center justify-center py-5 sm:w-28">
+          <span className="text-xs font-semibold uppercase tracking-widest text-purple-200">
+            Date
+          </span>
+          <span className="text-2xl font-bold leading-none">TBC</span>
+        </p>
+      )}
 
       {/* Perforation, with notches punched out of the top and bottom edges. */}
       <div aria-hidden="true" className="relative border-l-2 border-dashed border-white/40">
@@ -38,9 +51,9 @@ export default function ExperienceCard({ experience }: { experience: Experience 
       <div className="flex min-w-0 flex-1 gap-3 p-4">
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <p className="text-xs font-medium uppercase tracking-wide text-purple-200">
-            {experience.neighbourhood}
+            {text(experience.neighbourhood) ?? FILLER.neighbourhood}
           </p>
-          <h3 className="text-lg font-bold leading-tight">{experience.activityName}</h3>
+          <h3 className="text-lg font-bold leading-tight">{name}</h3>
           <p className="flex items-center gap-1.5 text-sm text-purple-100">
             <svg
               viewBox="0 0 24 24"
@@ -57,17 +70,20 @@ export default function ExperienceCard({ experience }: { experience: Experience 
           </p>
           <p className="text-sm text-purple-100">
             <span aria-hidden="true">✓ </span>
-            {experience.highlight}
+            {text(experience.highlight) ?? FILLER.highlight}
           </p>
-          <p className="mt-auto pt-1 text-sm text-purple-100">
-            <span className="text-lg font-semibold text-white">${experience.pricePerPerson}</span> /
-            person
-          </p>
+          {price === undefined ? (
+            <p className="mt-auto pt-1 text-sm font-medium text-purple-100">{FILLER.price}</p>
+          ) : (
+            <p className="mt-auto pt-1 text-sm text-purple-100">
+              <span className="text-lg font-semibold text-white">${price}</span> / person
+            </p>
+          )}
         </div>
 
         <div
           role="img"
-          aria-label={`Photo of ${experience.activityName} coming soon`}
+          aria-label={`Photo of ${name} coming soon`}
           className="flex size-16 shrink-0 items-center justify-center rounded-xl bg-white/15 text-purple-100"
         >
           <svg
@@ -86,11 +102,4 @@ export default function ExperienceCard({ experience }: { experience: Experience 
       </div>
     </article>
   );
-}
-
-function formatDuration(hours: number): string {
-  const h = Math.floor(hours);
-  const m = Math.round((hours - h) * 60);
-  if (h === 0) return `${m} min`;
-  return m ? `${h} h ${m} min` : `${h} h`;
 }
