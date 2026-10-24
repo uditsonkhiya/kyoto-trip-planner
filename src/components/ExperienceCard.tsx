@@ -8,47 +8,81 @@ export type Experience = {
   highlight: string;
 };
 
+// Ticket-style card: filled purple pass with a tear-off date stub on the left.
 export default function ExperienceCard({ experience }: { experience: Experience }) {
+  const date = new Date(experience.date + "T00:00:00Z");
+  const part = (opts: Intl.DateTimeFormatOptions) =>
+    date.toLocaleDateString("en-US", { ...opts, timeZone: "UTC" });
+
   return (
-    <article className="flex overflow-hidden rounded-2xl border border-zinc-200 border-l-4 border-l-purple-500 bg-white shadow-sm dark:border-zinc-800 dark:border-l-purple-500 dark:bg-zinc-900">
-      <div className="flex min-w-0 flex-1 flex-col gap-2 p-4">
-        <p className="text-xs font-medium uppercase tracking-wide text-purple-600 dark:text-purple-300">
-          {experience.neighbourhood}
-        </p>
-        <h3 className="text-xl font-semibold leading-tight tracking-tight text-zinc-900 dark:text-zinc-50">
-          {experience.activityName}
-        </h3>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
-          {formatDate(experience.date)} · {formatDuration(experience.durationHours)}
-        </p>
-        <p className="w-fit rounded-full bg-purple-50 px-2.5 py-0.5 text-xs font-medium text-purple-700 dark:bg-purple-500/15 dark:text-purple-300">
-          {experience.highlight}
-        </p>
-        <p className="mt-auto pt-1 text-sm text-zinc-600 dark:text-zinc-400">
-          <span className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-            ${experience.pricePerPerson}
-          </span>{" "}
-          / person
-        </p>
+    <article className="flex rounded-2xl bg-purple-600 text-white shadow-md dark:bg-purple-800">
+      <time
+        dateTime={experience.date}
+        className="flex w-24 shrink-0 flex-col items-center justify-center py-5 sm:w-28"
+      >
+        <span className="text-xs font-semibold uppercase tracking-widest text-purple-200">
+          {part({ weekday: "short" })}
+        </span>
+        <span className="text-4xl font-bold leading-none">{part({ day: "numeric" })}</span>
+        <span className="mt-1 text-xs font-semibold uppercase tracking-widest text-purple-200">
+          {part({ month: "short" })}
+        </span>
+      </time>
+
+      {/* Perforation, with notches punched out of the top and bottom edges. */}
+      <div aria-hidden="true" className="relative border-l-2 border-dashed border-white/40">
+        <span className="absolute -left-[13px] -top-3 size-6 rounded-full bg-background" />
+        <span className="absolute -bottom-3 -left-[13px] size-6 rounded-full bg-background" />
       </div>
 
-      <div
-        role="img"
-        aria-label={`Photo of ${experience.activityName} coming soon`}
-        className="flex w-28 shrink-0 items-center justify-center bg-purple-100 text-purple-500 sm:w-40 dark:bg-purple-500/10"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={1.5}
-          className="size-8"
-          aria-hidden="true"
+      <div className="flex min-w-0 flex-1 gap-3 p-4">
+        <div className="flex min-w-0 flex-1 flex-col gap-2">
+          <p className="text-xs font-medium uppercase tracking-wide text-purple-200">
+            {experience.neighbourhood}
+          </p>
+          <h3 className="text-lg font-bold leading-tight">{experience.activityName}</h3>
+          <p className="flex items-center gap-1.5 text-sm text-purple-100">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              className="size-4"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 7v5l3 2" />
+            </svg>
+            {formatDuration(experience.durationHours)}
+          </p>
+          <p className="text-sm text-purple-100">
+            <span aria-hidden="true">✓ </span>
+            {experience.highlight}
+          </p>
+          <p className="mt-auto pt-1 text-sm text-purple-100">
+            <span className="text-lg font-semibold text-white">${experience.pricePerPerson}</span> /
+            person
+          </p>
+        </div>
+
+        <div
+          role="img"
+          aria-label={`Photo of ${experience.activityName} coming soon`}
+          className="flex size-16 shrink-0 items-center justify-center rounded-xl bg-white/15 text-purple-100"
         >
-          <rect x="3" y="4" width="18" height="16" rx="2" />
-          <circle cx="9" cy="10" r="2" />
-          <path d="m21 16-5-5-9 9" />
-        </svg>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.5}
+            className="size-6"
+            aria-hidden="true"
+          >
+            <rect x="3" y="4" width="18" height="16" rx="2" />
+            <circle cx="9" cy="10" r="2" />
+            <path d="m21 16-5-5-9 9" />
+          </svg>
+        </div>
       </div>
     </article>
   );
@@ -59,13 +93,4 @@ function formatDuration(hours: number): string {
   const m = Math.round((hours - h) * 60);
   if (h === 0) return `${m} min`;
   return m ? `${h} h ${m} min` : `${h} h`;
-}
-
-function formatDate(iso: string): string {
-  return new Date(iso + "T00:00:00Z").toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    timeZone: "UTC",
-  });
 }

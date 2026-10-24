@@ -8,20 +8,23 @@ export type Food = {
   highlight: string;
 };
 
+const MAX_PRICE_RANGE = 4;
+
+// Menu-style card: centred, serif type, round photo and a dotted dish-to-price line.
 export default function FoodCard({ food }: { food: Food }) {
   return (
-    <article className="flex overflow-hidden rounded-2xl border border-zinc-200 border-l-4 border-l-amber-500 bg-white shadow-sm dark:border-zinc-800 dark:border-l-amber-500 dark:bg-zinc-900">
+    <article className="flex flex-col items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-6 py-5 text-center dark:border-amber-500/30 dark:bg-amber-500/5">
       <div
         role="img"
         aria-label={`Photo of ${food.restaurantName} coming soon`}
-        className="flex w-28 shrink-0 items-center justify-center bg-amber-100 text-amber-500 sm:w-40 dark:bg-amber-500/10"
+        className="flex size-16 items-center justify-center rounded-full bg-amber-200 text-amber-700 ring-4 ring-white dark:bg-amber-500/20 dark:text-amber-300 dark:ring-zinc-900"
       >
         <svg
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
           strokeWidth={1.5}
-          className="size-8"
+          className="size-6"
           aria-hidden="true"
         >
           <rect x="3" y="4" width="18" height="16" rx="2" />
@@ -30,26 +33,29 @@ export default function FoodCard({ food }: { food: Food }) {
         </svg>
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-2 p-4">
-        <p className="text-xs font-medium uppercase tracking-wide text-amber-700 dark:text-amber-300">
-          {food.neighbourhood}
-        </p>
-        <h3 className="text-xl font-semibold leading-tight tracking-tight text-zinc-900 dark:text-zinc-50">
-          {food.restaurantName}
-        </h3>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
-          {food.mealType} · <span aria-label={`Price range ${food.priceRange}`}>{food.priceRange}</span>
-        </p>
-        <p className="w-fit rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-500/15 dark:text-amber-300">
-          {food.highlight}
-        </p>
-        <p className="mt-auto pt-1 text-sm text-zinc-600 dark:text-zinc-400">
-          <span className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-            ${food.pricePerPerson}
-          </span>{" "}
-          / person
-        </p>
-      </div>
+      <p className="text-xs font-medium uppercase tracking-[0.2em] text-amber-800 dark:text-amber-300">
+        {food.mealType} · {food.neighbourhood}
+      </p>
+      <h3 className="font-serif text-2xl leading-tight text-zinc-900 dark:text-zinc-50">
+        {food.restaurantName}
+      </h3>
+      <div aria-hidden="true" className="h-px w-12 bg-amber-300 dark:bg-amber-500/40" />
+
+      <p className="flex w-full items-baseline gap-2 font-serif text-zinc-800 dark:text-zinc-200">
+        <span className="italic">{food.highlight}</span>
+        <span
+          aria-hidden="true"
+          className="flex-1 border-b-2 border-dotted border-amber-400 dark:border-amber-500/50"
+        />
+        <span className="font-semibold">${food.pricePerPerson}</span>
+      </p>
+      <p className="text-xs text-zinc-500 dark:text-zinc-400">
+        per person ·{" "}
+        <span className="font-semibold text-amber-800 dark:text-amber-300">{food.priceRange}</span>
+        <span aria-hidden="true" className="text-amber-300 dark:text-amber-500/40">
+          {"$".repeat(Math.max(0, MAX_PRICE_RANGE - food.priceRange.length))}
+        </span>
+      </p>
     </article>
   );
 }
