@@ -55,9 +55,11 @@ Run it locally with `npm install && npm run dev`, then open http://localhost:300
 
 ## Message for the team and leaders
 
-Hi team and leaders, this link is for the product team and leadership to try the Kyoto Trip Planner prototype on phone or laptop: https://kyoto-trip-planner.vercel.app (public, no login).
+Checked against the [UX Research requirements note](docs/ux-research-note.md).
 
-- **Happy path:** ask any Kyoto question, such as "cheapest trip in kyoto", to see the stay, Experience and food cards.
-- **Failure path:** type "best places in USA" to see the error bubble, then tap Try again to get the three cards.
+Hi team and leaders, the Kyoto Trip Planner prototype is ready for Thursday's session. The researcher shares this link with our 8 test guests; product team and leadership, please try it before and after: https://kyoto-trip-planner.vercel.app (public, no login, phone or laptop).
 
-Everything uses sample data, so nothing is a real listing and nothing can be booked.
+- **Happy path:** ask any Kyoto question, such as "cheapest trip in kyoto". You'll see thinking dots, then the stay, Experience and food cards.
+- **Failure path:** type "best places in USA" to see the error bubble, then tap Try again: dots, then the three cards.
+
+Everything is sample data; nothing is a real listing or can be booked.
