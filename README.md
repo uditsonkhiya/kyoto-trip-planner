@@ -13,14 +13,14 @@ Live link: [kyoto-trip-planner.vercel.app](https://kyoto-trip-planner.vercel.app
 Tick each item yes or no during the session.
 
 - [x] Guest message stays visible throughout
-- [ ] Thinking dots show before every reply
+- [x] Thinking dots show before every reply
 - [x] Three cards appear (stay, Experience, food)
 - [x] Typing `best places in USA` shows the broken mock
 - [x] The error appears inside the assistant bubble with “We couldn’t put your plan together just now.” and “Your request is saved, and you can try again.”
 - [x] Exactly one “Try again” button, inside the bubble
 - [x] No red, no error codes, no alerts, toasts, modals or separate pages
 - [x] All three broken shapes (bad type, missing data, plain string) are rejected by `toResponseItems`
-- [ ] Try again removes the failed bubble, shows the dots, then the three cards, and never picks the broken mock
+- [x] Try again removes the failed bubble, shows the dots, then the three cards, and never picks the broken mock
 - [x] `aria-live="polite"`, visible focus ring, 44px tap target, AA contrast, icon hidden from screen readers (the bubble has no icon)
 - [x] Works on phone and laptop
 - [x] Public Vercel link opens with no login
