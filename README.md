@@ -12,18 +12,28 @@ Live link: [kyoto-trip-planner.vercel.app](https://kyoto-trip-planner.vercel.app
 
 Tick each item yes or no during the session.
 
-- [ ] Guest message stays visible throughout
+- [x] Guest message stays visible throughout
 - [ ] Thinking dots show before every reply
-- [ ] Three cards appear (stay, Experience, food)
-- [ ] Typing `best places in USA` shows the broken mock
-- [ ] The error appears inside the assistant bubble with “We couldn’t put your plan together just now.” and “Your request is saved, and you can try again.”
-- [ ] Exactly one “Try again” button, inside the bubble
-- [ ] No red, no error codes, no alerts, toasts, modals or separate pages
-- [ ] All three broken shapes (bad type, missing data, plain string) are rejected by `toResponseItems`
+- [x] Three cards appear (stay, Experience, food)
+- [x] Typing `best places in USA` shows the broken mock
+- [x] The error appears inside the assistant bubble with “We couldn’t put your plan together just now.” and “Your request is saved, and you can try again.”
+- [x] Exactly one “Try again” button, inside the bubble
+- [x] No red, no error codes, no alerts, toasts, modals or separate pages
+- [x] All three broken shapes (bad type, missing data, plain string) are rejected by `toResponseItems`
 - [ ] Try again removes the failed bubble, shows the dots, then the three cards, and never picks the broken mock
-- [ ] `aria-live="polite"`, visible focus ring, 44px tap target, AA contrast, icon hidden from screen readers
-- [ ] Works on phone and laptop
-- [ ] Public Vercel link opens with no login
+- [x] `aria-live="polite"`, visible focus ring, 44px tap target, AA contrast, icon hidden from screen readers (the bubble has no icon)
+- [x] Works on phone and laptop
+- [x] Public Vercel link opens with no login
+
+## Tested on phone and laptop
+
+Each step was run on the live Vercel link.
+
+| Step | Laptop | Phone |
+| --- | --- | --- |
+| 1. Happy flow: any message shows the three cards | <img src="screenshots/Happy-flow.png" alt="Laptop: stay, experience and food cards after a normal message" width="420"> | <img src="screenshots/phone-happy-flow.PNG" alt="Phone: stay card after a normal message" width="200"> |
+| 2. Error bubble: typing `best places in USA` | <img src="screenshots/error-bubble.png" alt="Laptop: error bubble with a Try again button" width="420"> | <img src="screenshots/phone-error-bubble.png" alt="Phone: error bubble with a Try again button" width="200"> |
+| 3. After Try again: the three cards replace the error | <img src="screenshots/after-try_again-flow.png" alt="Laptop: stay, experience and food cards after Try again" width="420"> | <img src="screenshots/phone-after-try_again-flow.PNG" alt="Phone: stay card after Try again" width="200"> |
 
 ## Forced-failure state
 
