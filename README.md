@@ -6,11 +6,11 @@
 
 A chat page that answers questions about a Kyoto weekend with stay, experience and food cards.
 
-![The three cards: a stay booking card, an experience ticket and a food menu card](docs/three-cards.png)
+![The live app on a laptop: a stay booking card, an experience ticket and a food menu card](screenshots/Happy-flow.png)
 
 ## Prototype session pass checklist
 
-Every requirement is ticked on both phone and laptop. Proof links to a screenshot in [Tested on phone and laptop](#tested-on-phone-and-laptop) where one shows it; "Confirmed by tester" means it was checked on that device and the screenshot isn't in the repo yet. Requirements that don't depend on the device are checked in the code.
+Each tick links to a screenshot in [Tested on phone and laptop](#tested-on-phone-and-laptop) where one exists. Code-level rows link to the code. "Confirmed by tester" means it was checked by hand on that device, but no screenshot was taken.
 
 | Requirement | Phone | Laptop | Proof |
 | --- | :---: | :---: | --- |
@@ -24,7 +24,7 @@ Every requirement is ticked on both phone and laptop. Proof links to a screensho
 | All three broken shapes (bad type, missing data, plain string) are rejected by `toResponseItems` | — | — | Code check: [src/lib/responseItems.ts](src/lib/responseItems.ts), shapes in [src/data/mockResponse.ts](src/data/mockResponse.ts) |
 | Try again removes the failed bubble, shows the dots, then the three cards, and never picks the broken mock | ✅ | ✅ | Phone [3](screenshots/phone-after-try_again-flow.PNG), Laptop [3](screenshots/after-try_again-flow.png); dots confirmed by tester |
 | `aria-live="polite"`, AA contrast, icon hidden from screen readers | — | — | Code check: [src/app/chat.tsx](src/app/chat.tsx) (`aria-live="polite"`, `text-gray-800` on `bg-gray-50`; the bubble has no icon) |
-| Visible focus ring on Try again | ✅ | ✅ | Confirmed by tester; classes in [src/app/chat.tsx](src/app/chat.tsx) |
+| Visible focus ring on Try again | N/A (touch, no keyboard) | ✅ | Laptop confirmed by tester; classes in [src/app/chat.tsx](src/app/chat.tsx) |
 | 44px tap target on Try again | ✅ | ✅ | Confirmed by tester; `min-h-[44px]` in [src/app/chat.tsx](src/app/chat.tsx) |
 | Works on phone and laptop | ✅ | ✅ | Phone [1](screenshots/phone-happy-flow.PNG), [2](screenshots/phone-error-bubble.png), [3](screenshots/phone-after-try_again-flow.PNG); Laptop [1](screenshots/Happy-flow.png), [2](screenshots/error-bubble.png), [3](screenshots/after-try_again-flow.png) |
 | Public Vercel link opens with no login | ✅ | ✅ | Phone [2](screenshots/phone-error-bubble.png) (vercel.app in the address bar); Laptop [1](screenshots/Happy-flow.png) |
@@ -55,11 +55,11 @@ Run it locally with `npm install && npm run dev`, then open http://localhost:300
 
 ## Message for the team and leaders
 
-Checked against the [UX Research requirements note](docs/ux-research-note.md).
+Checked against the [draft UX Research requirements note](docs/ux-research-note.md).
 
-Hi team and leaders, the Kyoto Trip Planner prototype is ready for Thursday's session. The researcher shares this link with our 8 test guests; product team and leadership, please try it before and after: https://kyoto-trip-planner.vercel.app (public, no login, phone or laptop).
+Hi team and leaders, the Kyoto Trip Planner prototype is ready for Thursday's session. The researcher shares this link with 8 test guests; product team and leadership, try it before and after: https://kyoto-trip-planner.vercel.app (public, no login, phone or laptop).
 
-- **Happy path:** ask any Kyoto question, such as "cheapest trip in kyoto". You'll see thinking dots, then the stay, Experience and food cards.
-- **Failure path:** type "best places in USA" to see the error bubble, then tap Try again: dots, then the three cards.
+- **Happy path:** ask any Kyoto question, e.g. "cheapest trip in kyoto": thinking dots, then the stay, Experience and food cards.
+- **Failure path:** type "best places in USA" for the error bubble, then tap Try again: dots, then three cards.
 
-Everything is sample data; nothing is a real listing or can be booked.
+All sample data: nothing is a real listing or can be booked.
