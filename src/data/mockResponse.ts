@@ -43,3 +43,12 @@ export const mockResponse: ResponseItem[] = [
     },
   },
 ];
+
+// Forced-failure reply, sent only when the user types the forced-failure
+// phrase. Nothing here can become a card: an unknown type, a missing data
+// object, and data that is a plain string.
+export const brokenMockResponse: unknown = [
+  { type: "hotel", data: { listingTitle: "Kamo Riverside Loft" } },
+  { type: "experience" },
+  { type: "food", data: "Arashiyama Tofu House, $$, lunch" },
+];

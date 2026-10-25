@@ -2,13 +2,18 @@
 
 import { useEffect, useRef, useState } from "react";
 import ItemCard from "@/components/ItemCard";
-import { mockResponse, type ResponseItem } from "@/data/mockResponse";
+import { brokenMockResponse, mockResponse, type ResponseItem } from "@/data/mockResponse";
+import { toResponseItems } from "@/lib/responseItems";
 
 const TYPING_DELAY_MS = 1500;
 
+// Typing exactly this (any case) sends the broken mock to show the error state.
+const FORCE_FAIL_PHRASE = "best places in usa";
+
 type Message =
   | { id: number; role: "user" | "assistant"; text: string }
-  | { id: number; role: "assistant"; items: ResponseItem[] };
+  | { id: number; role: "assistant"; items: ResponseItem[] }
+  | { id: number; role: "assistant"; failed: true };
 
 const initialMessages: Message[] = [
   {
@@ -17,6 +22,40 @@ const initialMessages: Message[] = [
     text: "Konnichiwa! Ask me anything about your Kyoto weekend — stays, experiences or food.",
   },
 ];
+
+// Same shape as the assistant bubble, in neutral colours.
+function FailedReply({ onRetry }: { onRetry?: () => void }) {
+  // Mount the live region empty and add the text a frame later, so screen
+  // readers see the region before its content and announce the change.
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setShown(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  return (
+    <li
+      aria-live="polite"
+      className="max-w-[80%] self-start whitespace-pre-wrap rounded-2xl border border-gray-200 bg-gray-50 px-4 py-2 text-sm leading-6 text-gray-800"
+    >
+      {shown && (
+        <>
+          <p className="font-medium">{"We couldn't put your plan together just now."}</p>
+          <p>Your request is saved, and you can try again.</p>
+          {onRetry && (
+            <button
+              type="button"
+              onClick={onRetry}
+              className="mt-3 min-h-[44px] rounded-full bg-gray-900 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Try again
+            </button>
+          )}
+        </>
+      )}
+    </li>
+  );
+}
 
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
@@ -43,20 +82,41 @@ export default function Chat() {
     if (!text || pending) return;
     setMessages((prev) => [...prev, { id: prev.length, role: "user", text }]);
     setInput("");
-    setPending(true);
+    reply(text.toLowerCase() === FORCE_FAIL_PHRASE ? brokenMockResponse : mockResponse);
+  }
 
+  function reply(response: unknown) {
+    setPending(true);
     timerRef.current = setTimeout(() => {
-      setMessages((prev) => [...prev, { id: prev.length, role: "assistant", items: mockResponse }]);
+      const items = toResponseItems(response);
+      setMessages((prev) => [
+        ...prev,
+        items
+          ? { id: prev.length, role: "assistant", items }
+          : { id: prev.length, role: "assistant", failed: true },
+      ]);
       setPending(false);
     }, TYPING_DELAY_MS);
+  }
+
+  // Retrying isn't typing the phrase again, so it gets the happy-path reply.
+  function retry() {
+    setMessages((prev) => prev.slice(0, -1));
+    reply(mockResponse);
   }
 
   return (
     <>
       <div className="flex-1 overflow-y-auto">
         <ul className="mx-auto flex w-full max-w-3xl flex-col gap-3 px-4 py-6">
-          {messages.map((m) =>
-            "items" in m ? (
+          {messages.map((m, i) =>
+            "failed" in m ? (
+              <FailedReply
+                key={m.id}
+                // Only the latest failure can be retried; older ones stay as history.
+                onRetry={i === messages.length - 1 && !pending ? retry : undefined}
+              />
+            ) : "items" in m ? (
               <li key={m.id} className="w-full max-w-xl self-start">
                 <ul className="flex flex-col gap-3">
                   {m.items.map((item, i) => (
