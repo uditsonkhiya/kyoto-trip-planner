@@ -8,7 +8,7 @@ Run it locally with `npm install && npm run dev`, then open http://localhost:300
 
 ## Prototype session pass checklist
 
-Live link: _add the public Vercel URL here_
+Live link: [kyoto-trip-planner.vercel.app](https://kyoto-trip-planner.vercel.app)
 
 Tick each item yes or no during the session.
 
