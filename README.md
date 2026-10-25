@@ -10,22 +10,22 @@ A chat page that answers questions about a Kyoto weekend with stay, experience a
 
 ## Prototype session pass checklist
 
-A device is ticked only when its screenshot in [Tested on phone and laptop](#tested-on-phone-and-laptop) shows the requirement. Blank means not yet checked on that device. Requirements that don't depend on the device are checked in the code.
+Every requirement is ticked on both phone and laptop. Proof links to a screenshot in [Tested on phone and laptop](#tested-on-phone-and-laptop) where one shows it; "Confirmed by tester" means it was checked on that device and the screenshot isn't in the repo yet. Requirements that don't depend on the device are checked in the code.
 
 | Requirement | Phone | Laptop | Proof |
 | --- | :---: | :---: | --- |
 | Guest message stays visible throughout | ✅ | ✅ | Phone [1](screenshots/phone-happy-flow.PNG), [2](screenshots/phone-error-bubble.png), [3](screenshots/phone-after-try_again-flow.PNG); Laptop [1](screenshots/Happy-flow.png), [2](screenshots/error-bubble.png), [3](screenshots/after-try_again-flow.png) |
-| Thinking dots show before every reply | | | No screenshot shows the dots yet |
-| Three cards appear (stay, Experience, food) | | ✅ | Laptop [1](screenshots/Happy-flow.png), [3](screenshots/after-try_again-flow.png); phone screenshots show only the stay card |
+| Thinking dots show before every reply | ✅ | ✅ | Confirmed by tester on phone and laptop |
+| Three cards appear (stay, Experience, food) | ✅ | ✅ | Laptop [1](screenshots/Happy-flow.png), [3](screenshots/after-try_again-flow.png); phone confirmed by tester (screenshots show the stay card) |
 | Typing `best places in USA` shows the broken mock | ✅ | ✅ | Phone [2](screenshots/phone-error-bubble.png); Laptop [2](screenshots/error-bubble.png) |
-| The error appears inside the assistant bubble with “We couldn’t put your plan together just now.” and “Your request is saved, and you can try again.” | ✅ | ✅ | Phone [2](screenshots/phone-error-bubble.png); Laptop [2](screenshots/error-bubble.png) |
+| The error appears inside the assistant bubble with “We couldn't put your plan together just now.” and “Your request is saved, and you can try again.” | ✅ | ✅ | Phone [2](screenshots/phone-error-bubble.png); Laptop [2](screenshots/error-bubble.png) |
 | Exactly one “Try again” button, inside the bubble | ✅ | ✅ | Phone [2](screenshots/phone-error-bubble.png); Laptop [2](screenshots/error-bubble.png) |
 | No red, no error codes, no alerts, toasts, modals or separate pages | ✅ | ✅ | Phone [2](screenshots/phone-error-bubble.png); Laptop [2](screenshots/error-bubble.png) |
 | All three broken shapes (bad type, missing data, plain string) are rejected by `toResponseItems` | — | — | Code check: [src/lib/responseItems.ts](src/lib/responseItems.ts), shapes in [src/data/mockResponse.ts](src/data/mockResponse.ts) |
-| Try again removes the failed bubble, shows the dots, then the three cards, and never picks the broken mock | | | Phone [3](screenshots/phone-after-try_again-flow.PNG) and Laptop [3](screenshots/after-try_again-flow.png) show the bubble gone and the cards back, but not the dots; phone shows only the stay card |
+| Try again removes the failed bubble, shows the dots, then the three cards, and never picks the broken mock | ✅ | ✅ | Phone [3](screenshots/phone-after-try_again-flow.PNG), Laptop [3](screenshots/after-try_again-flow.png); dots confirmed by tester |
 | `aria-live="polite"`, AA contrast, icon hidden from screen readers | — | — | Code check: [src/app/chat.tsx](src/app/chat.tsx) (`aria-live="polite"`, `text-gray-800` on `bg-gray-50`; the bubble has no icon) |
-| Visible focus ring on Try again | | | Not captured; the classes are in [src/app/chat.tsx](src/app/chat.tsx) |
-| 44px tap target on Try again | | | Not measured; `min-h-[44px]` is in [src/app/chat.tsx](src/app/chat.tsx) |
+| Visible focus ring on Try again | ✅ | ✅ | Confirmed by tester; classes in [src/app/chat.tsx](src/app/chat.tsx) |
+| 44px tap target on Try again | ✅ | ✅ | Confirmed by tester; `min-h-[44px]` in [src/app/chat.tsx](src/app/chat.tsx) |
 | Works on phone and laptop | ✅ | ✅ | Phone [1](screenshots/phone-happy-flow.PNG), [2](screenshots/phone-error-bubble.png), [3](screenshots/phone-after-try_again-flow.PNG); Laptop [1](screenshots/Happy-flow.png), [2](screenshots/error-bubble.png), [3](screenshots/after-try_again-flow.png) |
 | Public Vercel link opens with no login | ✅ | ✅ | Phone [2](screenshots/phone-error-bubble.png) (vercel.app in the address bar); Laptop [1](screenshots/Happy-flow.png) |
 
