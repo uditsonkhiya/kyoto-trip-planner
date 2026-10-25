@@ -6,6 +6,25 @@ A chat page that answers questions about a Kyoto weekend with stay, experience a
 
 Run it locally with `npm install && npm run dev`, then open http://localhost:3000.
 
+## Prototype session pass checklist
+
+Live link: _add the public Vercel URL here_
+
+Tick each item yes or no during the session.
+
+- [ ] Guest message stays visible throughout
+- [ ] Thinking dots show before every reply
+- [ ] Three cards appear (stay, Experience, food)
+- [ ] Typing `best places in USA` shows the broken mock
+- [ ] The error appears inside the assistant bubble with “We couldn’t put your plan together just now.” and “Your request is saved, and you can try again.”
+- [ ] Exactly one “Try again” button, inside the bubble
+- [ ] No red, no error codes, no alerts, toasts, modals or separate pages
+- [ ] All three broken shapes (bad type, missing data, plain string) are rejected by `toResponseItems`
+- [ ] Try again removes the failed bubble, shows the dots, then the three cards, and never picks the broken mock
+- [ ] `aria-live="polite"`, visible focus ring, 44px tap target, AA contrast, icon hidden from screen readers
+- [ ] Works on phone and laptop
+- [ ] Public Vercel link opens with no login
+
 ## Forced-failure state
 
 To fire the forced failure, type `best places in USA` as the whole message (any case); `src/app/chat.tsx` then sends the broken mock from `src/data/mockResponse.ts`.
